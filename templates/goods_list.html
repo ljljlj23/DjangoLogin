@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {% if status == '1' %}
+    在售商品列表
+  {% else %}
+    下架商品列表
+  {% endif %}
+{% endblock %}
+
+{% block label %}
+  {% if status == '1' %}
+    在售商品列表
+  {% else %}
+    下架商品列表
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th>商品编号</th>
+        <th>商品名称</th>
+        <th>商品价格</th>
+        <th>商品数量</th>
+        <th>商品产地</th>
+        <th>商品保质期</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for one in page_obj %}
+      <tr>
+        <td>{{ one.goods_number }}</td>
+        <td>{{ one.goods_name }}</td>
+        <td>{{ one.goods_price }}</td>
+        <td>{{ one.goods_count }}</td>
+        <td>{{ one.goods_location }}</td>
+        <td>{{ one.goods_safe_date }}</td>
+        <td>
+          <button class="btn btn-primary">修改</button>
+          {% if status == '1' %}
+            <a href="/setStatus/down/{{ one.id }}" class="btn btn-warning">下架</a>
+          {% else %}
+            <a href="/setStatus/up/{{ one.id }}" class="btn btn-warning">上架</a>
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+    <tfoot>
+    </tfoot>
+  </table>
+  <ul class="pagination" style="float: right;">
+  {% for page in paginator.page_range %}
+    <li class="paginate_button page-item previous">
+      <a href="/goods_list/{{ status }}/{{ page }}" class="page-link">{{ page }}</a>
+    </li>
+  {% endfor %}
+  </ul>
+{% endblock %}

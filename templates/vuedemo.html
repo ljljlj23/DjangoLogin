@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml"
+      xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>Vue</title>
+  <script src="/static/js/vue.min.js"></script>
+</head>
+<body>
+{% verbatim %}
+<div id="panel">
+  <p>
+    内容绑定 {{ name }}
+  </p>
+  <hr>
+  <p v-bind:style="style">
+    属性绑定 style/id/class...皆可
+  </p>
+  <hr>
+  <p v-if="flag">
+    判断绑定
+  </p>
+  <hr>
+  <p v-for="p in lists">
+    循环绑定 {{ p }}
+  </p>
+  <hr>
+  <button v-on:click="click">
+    事件绑定
+  </button>
+  <hr>
+</div>
+{% endverbatim %}
+<script>
+  var vue = new Vue(
+      {
+          el:'#panel',
+          data:{
+              name:'zhangsan',
+              style:'color:red',
+              flag:1,
+              lists:['python','java','php'],
+          },
+          methods:{
+              'click':function () {
+                  alert('hello world');
+              }
+          }
+      }
+  )
+</script>
+</body>
+</html>

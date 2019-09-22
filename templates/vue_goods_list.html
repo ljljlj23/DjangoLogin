@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {% if status == '1' %}
+    在售商品列表
+  {% else %}
+    下架商品列表
+  {% endif %}
+{% endblock %}
+
+{% block label %}
+  {% if status == '1' %}
+    在售商品列表
+  {% else %}
+    下架商品列表
+  {% endif %}
+{% endblock %}
+
+{% block style %}
+  <script src="/static/js/vue.min.js"></script>
+  <script src="/static/js/vue-resource.js"></script>
+{% endblock %}
+
+{% block content %}
+  {% verbatim %}
+  <div id="content">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>商品编号</th>
+          <th>商品名称</th>
+          <th>商品价格</th>
+          <th>商品数量</th>
+          <th>商品产地</th>
+          <th>商品保质期</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="one in goods_list">
+          <td>{{ one.goods_number }}</td>
+          <td>{{ one.goods_name }}</td>
+          <td>{{ one.goods_price }}</td>
+          <td>{{ one.goods_count }}</td>
+          <td>{{ one.goods_location }}</td>
+          <td>{{ one.goods_safe_date }}</td>
+          <td>
+            <button class="btn btn-primary">修改</button>
+            <button class="btn btn-warning">下架</button>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+      </tfoot>
+    </table>
+    <ul class="pagination" style="float: right;">
+      <li class="paginate_button page-item previous" v-for="page in page_range">
+        <a class="page-link" v-bind:href="page">{{ page }}</a>
+      </li>
+    </ul>
+  </div>
+  {% endverbatim %}
+{% endblock %}
+
+{% block script %}
+  <script>
+    Vue.use(VueResource);    //声明使用vue_resource
+    var vue = new Vue(
+        {
+            //发送一个get请求，从api接口中获取数据，渲染到指定页面
+            el:'#content',
+            data:{
+                goods_list:'',
+                page_range:'',
+            },
+            created:function () {
+                url='/goods_list_api/1/1/';
+                this.$http.get(url).then(
+                    //相当于ajax中的success
+                    function (data){
+                        //console.log(data['data']['data'])
+                        //console.log(data['data']['page_range']);
+                        this.goods_list=data['data']['data'];
+                        this.page_range=data['data']['page_range'];
+                    },
+                    //相当于ajax中的error
+                    function (error) {
+                        console.log(error)
+                    }
+                )
+            }
+        }
+    )
+  </script>
+{% endblock %}
