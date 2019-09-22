@@ -24,4 +24,15 @@ urlpatterns = [
     path('login/', login),
     path('index/', index),
     path('logout/',logout),
+    path('base/',base),
+    # path('goods_list/',goods_list),
+    re_path('goods_list/(?P<status>[01])/(?P<page>\d+)',goods_list),
+    re_path('setStatus/(?P<status>\w+)/(?P<id>\d+)',setStatus),
+    path('vuedemo/',vuedemo),
+    path('api_goods_list/',api_goods_list),    # 页面
+]
+
+# api接口
+urlpatterns += [
+    re_path('goods_list_api/(?P<status>[01])/(?P<page>\d+)',goods_list_api),    # 数据
 ]
